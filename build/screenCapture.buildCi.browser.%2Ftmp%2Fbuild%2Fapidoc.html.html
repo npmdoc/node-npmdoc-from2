@@ -1,0 +1,474 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/hughsk/from2">from2 (v2.3.0)</a>
+</h1>
+<h4>Convenience wrapper for ReadableStream, with an API lifted from "from" and "through2"</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.from2">module from2</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.from2.from2">
+            function <span class="apidocSignatureSpan"></span>from2
+            <span class="apidocSignatureSpan">(opts, read)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.from2.ctor">
+            function <span class="apidocSignatureSpan">from2.</span>ctor
+            <span class="apidocSignatureSpan">(opts, read)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.from2.obj">
+            function <span class="apidocSignatureSpan">from2.</span>obj
+            <span class="apidocSignatureSpan">(opts, read)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.from2.toString">
+            function <span class="apidocSignatureSpan">from2.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.from2.ctor">module from2.ctor</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.from2.ctor.ctor">
+            function <span class="apidocSignatureSpan">from2.</span>ctor
+            <span class="apidocSignatureSpan">(opts, read)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.from2.obj">module from2.obj</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.from2.obj.obj">
+            function <span class="apidocSignatureSpan">from2.</span>obj
+            <span class="apidocSignatureSpan">(opts, read)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.from2.toString">module from2.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.from2.toString.toString">
+            function <span class="apidocSignatureSpan">from2.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.from2" id="apidoc.module.from2">module from2</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.from2.from2" id="apidoc.element.from2.from2">
+        function <span class="apidocSignatureSpan"></span>from2
+        <span class="apidocSignatureSpan">(opts, read)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function from2(opts, read) {
+  if (typeof opts !== 'object' || Array.isArray(opts)) {
+    read = opts
+    opts = {}
+  }
+
+  var rs = new Proto(opts)
+  rs._from = Array.isArray(read) ? toFunction(read) : (read || noop)
+  return rs
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.from2.ctor" id="apidoc.element.from2.ctor">
+        function <span class="apidocSignatureSpan">from2.</span>ctor
+        <span class="apidocSignatureSpan">(opts, read)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function ctor(opts, read) {
+  if (typeof opts === 'function') {
+    read = opts
+    opts = {}
+  }
+
+  opts = defaults(opts)
+
+  inherits(Class, Readable)
+  function Class(override) {
+    if (!(this instanceof Class)) return new Class(override)
+    this._reading = false
+    this._callback = check
+    this.destroyed = false
+    Readable.call(this, override || opts)
+
+    var self = this
+    var hwm = this._readableState.highWaterMark
+
+    function check(err, data) {
+      if (self.destroyed) return
+      if (err) return self.destroy(err)
+      if (data === null) return self.push(null)
+      self._reading = false
+      if (self.push(data)) self._read(hwm)
+    }
+  }
+
+  Class.prototype._from = read || noop
+  Class.prototype._read = function(size) {
+    if (this._reading || this.destroyed) return
+    this._reading = true
+    this._from(size, this._callback)
+  }
+
+  Class.prototype.destroy = function(err) {
+    if (this.destroyed) return
+    this.destroyed = true
+
+    var self = this
+    process.nextTick(function() {
+      if (err) self.emit('error', err)
+      self.emit('close')
+    })
+  }
+
+  return Class
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+fromString('hello world').pipe(process.stdout)
+```
+
+### `stream = from2.obj([opts], read)` ###
+
+Shorthand for `from2({ objectMode: true }, read)`.
+
+### `createStream = from2.<span class="apidocCodeKeywordSpan">ctor</span>([opts], read)` ###
+
+If you're creating similar streams in quick succession you can improve
+performance by generating a stream **constructor** that you can reuse instead
+of creating one-off streams on each call.
+
+Takes the same options as `from2`, instead returning a constructor which you
+can use to create new streams.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.from2.obj" id="apidoc.element.from2.obj">
+        function <span class="apidocSignatureSpan">from2.</span>obj
+        <span class="apidocSignatureSpan">(opts, read)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function obj(opts, read) {
+  if (typeof opts === 'function' || Array.isArray(opts)) {
+    read = opts
+    opts = {}
+  }
+
+  opts = defaults(opts)
+  opts.objectMode = true
+  opts.highWaterMark = 16
+
+  return from2(opts, read)
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// pipe "hello world" out
+// to stdout.
+fromString('hello world').pipe(process.stdout)
+```
+
+### `stream = from2.<span class="apidocCodeKeywordSpan">obj</span>([opts], read)` ###
+
+Shorthand for `from2({ objectMode: true }, read)`.
+
+### `createStream = from2.ctor([opts], read)` ###
+
+If you're creating similar streams in quick succession you can improve
+performance by generating a stream **constructor** that you can reuse instead
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.from2.toString" id="apidoc.element.from2.toString">
+        function <span class="apidocSignatureSpan">from2.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+})
+
+test('arrays', function (t) {
+  var input = ['a', 'b', 'c']
+  var stream = from(input)
+  var output = []
+  stream.on('data', function (letter) {
+    output.push(letter.<span class="apidocCodeKeywordSpan">toString</span>())
+  })
+  stream.on('end', function () {
+    t.deepEqual(input, output)
+    t.end()
+  })
+})
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.from2.ctor" id="apidoc.module.from2.ctor">module from2.ctor</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.from2.ctor.ctor" id="apidoc.element.from2.ctor.ctor">
+        function <span class="apidocSignatureSpan">from2.</span>ctor
+        <span class="apidocSignatureSpan">(opts, read)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function ctor(opts, read) {
+  if (typeof opts === 'function') {
+    read = opts
+    opts = {}
+  }
+
+  opts = defaults(opts)
+
+  inherits(Class, Readable)
+  function Class(override) {
+    if (!(this instanceof Class)) return new Class(override)
+    this._reading = false
+    this._callback = check
+    this.destroyed = false
+    Readable.call(this, override || opts)
+
+    var self = this
+    var hwm = this._readableState.highWaterMark
+
+    function check(err, data) {
+      if (self.destroyed) return
+      if (err) return self.destroy(err)
+      if (data === null) return self.push(null)
+      self._reading = false
+      if (self.push(data)) self._read(hwm)
+    }
+  }
+
+  Class.prototype._from = read || noop
+  Class.prototype._read = function(size) {
+    if (this._reading || this.destroyed) return
+    this._reading = true
+    this._from(size, this._callback)
+  }
+
+  Class.prototype.destroy = function(err) {
+    if (this.destroyed) return
+    this.destroyed = true
+
+    var self = this
+    process.nextTick(function() {
+      if (err) self.emit('error', err)
+      self.emit('close')
+    })
+  }
+
+  return Class
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+fromString('hello world').pipe(process.stdout)
+```
+
+### `stream = from2.obj([opts], read)` ###
+
+Shorthand for `from2({ objectMode: true }, read)`.
+
+### `createStream = from2.<span class="apidocCodeKeywordSpan">ctor</span>([opts], read)` ###
+
+If you're creating similar streams in quick succession you can improve
+performance by generating a stream **constructor** that you can reuse instead
+of creating one-off streams on each call.
+
+Takes the same options as `from2`, instead returning a constructor which you
+can use to create new streams.
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.from2.obj" id="apidoc.module.from2.obj">module from2.obj</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.from2.obj.obj" id="apidoc.element.from2.obj.obj">
+        function <span class="apidocSignatureSpan">from2.</span>obj
+        <span class="apidocSignatureSpan">(opts, read)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function obj(opts, read) {
+  if (typeof opts === 'function' || Array.isArray(opts)) {
+    read = opts
+    opts = {}
+  }
+
+  opts = defaults(opts)
+  opts.objectMode = true
+  opts.highWaterMark = 16
+
+  return from2(opts, read)
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// pipe "hello world" out
+// to stdout.
+fromString('hello world').pipe(process.stdout)
+```
+
+### `stream = from2.<span class="apidocCodeKeywordSpan">obj</span>([opts], read)` ###
+
+Shorthand for `from2({ objectMode: true }, read)`.
+
+### `createStream = from2.ctor([opts], read)` ###
+
+If you're creating similar streams in quick succession you can improve
+performance by generating a stream **constructor** that you can reuse instead
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.from2.toString" id="apidoc.module.from2.toString">module from2.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.from2.toString.toString" id="apidoc.element.from2.toString.toString">
+        function <span class="apidocSignatureSpan">from2.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+})
+
+test('arrays', function (t) {
+  var input = ['a', 'b', 'c']
+  var stream = from(input)
+  var output = []
+  stream.on('data', function (letter) {
+    output.push(letter.<span class="apidocCodeKeywordSpan">toString</span>())
+  })
+  stream.on('end', function () {
+    t.deepEqual(input, output)
+    t.end()
+  })
+})
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
