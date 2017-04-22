@@ -1,4 +1,7 @@
-# api documentation for  [from2 (v2.3.0)](https://github.com/hughsk/from2)  [![npm package](https://img.shields.io/npm/v/npmdoc-from2.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-from2) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-from2.svg)](https://travis-ci.org/npmdoc/node-npmdoc-from2)
+# npmdoc-from2
+
+#### api documentation for  [from2 (v2.3.0)](https://github.com/hughsk/from2)  [![npm package](https://img.shields.io/npm/v/npmdoc-from2.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-from2) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-from2.svg)](https://travis-ci.org/npmdoc/node-npmdoc-from2)
+
 #### Convenience wrapper for ReadableStream, with an API lifted from "from" and "through2"
 
 [![NPM](https://nodei.co/npm/from2.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/from2)
@@ -72,7 +75,8 @@
     "scripts": {
         "test": "node test"
     },
-    "version": "2.3.0"
+    "version": "2.3.0",
+    "bin": {}
 }
 ```
 
